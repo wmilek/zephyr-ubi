@@ -440,10 +440,13 @@ int ubi_leb_read(struct ubi_device *ubi, uint32_t vol_id, uint32_t lnum,
 	const bool attached = api_device_is_attached(ubi);
 	const bool reachable = api_vol_id_is_public(vol_id);
 
-	if (!attached || !reachable || NULL == buffer) {
+	if (!attached || !reachable || (NULL == buffer && 0 != length)) {
 		LOG_ERR("leb read: needs a handle, a volume and a destination");
 		return -EINVAL;
 	}
+
+	if (0 == length)
+		return 0;
 
 	int ret = api_lock(ubi);
 

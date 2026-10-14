@@ -221,6 +221,7 @@ ZTEST(ubi_leb, test_a_length_of_zero_does_nothing)
 	zassert_ok(ubi_leb_write_at(ubi, vol_id, 0, 0, NULL, 0));
 	zassert_ok(ubi_leb_read(ubi, vol_id, 0, 0, read, 0));
 	zassert_ok(ubi_leb_read(ubi, vol_id, 1, 0, read, 0));
+	zassert_ok(ubi_leb_read(ubi, vol_id, 0, 0, NULL, 0));
 
 	zassert_ok(ubi_device_get_info(ubi, &after));
 	zassert_equal(before.max_sqnum, after.max_sqnum);
