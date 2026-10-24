@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## v0.1.4 (2026-10-24)
+
+No change to the on-flash format.
 
 ### API
 
