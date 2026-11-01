@@ -342,7 +342,7 @@ static int shell_cmd_info(const struct shell *sh, size_t argc, char **argv)
 		    info.peb_count, info.peb_size, info.leb_size,
 		    info.write_block_size, ubi->geometry.erase_value);
 	shell_print(sh, "volumes:      %u of %u, %u LEBs free",
-		    info.volume_count, CONFIG_UBI_MAX_NR_OF_VOLUMES,
+		    info.volume_count, (unsigned int)CONFIG_UBI_MAX_NR_OF_VOLUMES,
 		    info.free_lebs);
 	shell_print(sh,
 		    "PEBs:         %u free, %u reclaimable, %u relocatable, "
@@ -475,7 +475,7 @@ static int shell_cmd_ec(const struct shell *sh, size_t argc, char **argv)
 		    info.healthy_pebs, info.min_erase_count,
 		    info.max_erase_count,
 		    info.max_erase_count - info.min_erase_count,
-		    CONFIG_UBI_WEAR_LEVELING_THRESHOLD);
+		    (unsigned int)CONFIG_UBI_WEAR_LEVELING_THRESHOLD);
 
 	for (uint32_t done = 0; done < count;) {
 		const uint32_t rows =
