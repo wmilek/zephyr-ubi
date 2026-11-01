@@ -37,6 +37,9 @@ AES-CMAC.
   every read.
 - **Rollback detection** — a state callback decides whether to trust the
   device, at every attach and every `CONFIG_UBI_STATE_CHECK_INTERVAL` writes.
+- **Diagnostic shell** — `CONFIG_UBI_SHELL` adds a read-only `ubi` command
+  that shows the LEB to PEB mapping, the state and erase count of every
+  block, and the device information.
 - **Maintenance on demand** — erasing and wear levelling run in
   `ubi_maintenance()`, on a budget the application chooses; no background
   thread.

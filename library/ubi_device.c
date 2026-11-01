@@ -33,6 +33,7 @@
 #include "ubi_key.h"
 #include "ubi_peb.h"
 #include "ubi_private.h"
+#include "ubi_shell.h"
 #include "ubi_state.h"
 #include "ubi_volume_table.h"
 
@@ -590,6 +591,8 @@ int ubi_impl_device_init(struct ubi_device *ubi,
 
 	ubi->magic = UBI_DEVICE_MAGIC;
 
+	ubi_impl_shell_register(ubi);
+
 	LOG_INF("attached partition %u: image_seq=0x%08x, %u volumes, "
 		"revision %u",
 		config->flash_area_id, ubi->image_seq, ubi->volumes.count,
@@ -611,6 +614,8 @@ release_partition:
 void ubi_impl_device_deinit(struct ubi_device *ubi)
 {
 	const uint8_t flash_area_id = ubi->flash_area->fa_id;
+
+	ubi_impl_shell_unregister(ubi);
 
 	device_tables_free(ubi);
 	device_close(ubi);

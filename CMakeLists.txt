@@ -27,6 +27,11 @@ if(CONFIG_UBI)
     library/ubi_volume_table.c
   )
 
+  zephyr_library_sources_ifdef(CONFIG_UBI_SHELL
+    library/ubi_shell.c
+    library/ubi_shell_volume.c
+  )
+
   ubi_target_warnings(ubi)
 
 endif()

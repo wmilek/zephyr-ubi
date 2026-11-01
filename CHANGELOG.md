@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+No change to the on-flash format or to the API.
+
+### Library
+
+- `CONFIG_UBI_SHELL` adds a read-only `ubi` shell command: `list`, `info`,
+  `volumes`, `map` (LEB to PEB mapping with erase counts), `pebs` (state,
+  erase count, protection and owner of each block) and `ec` (erase counts).
+  Attached devices are found by partition number or label; detaching waits
+  for a command looking at the device. The handle grows by a pointer with
+  the option on, and is unchanged with it off.
+
+### Tests
+
+- `ubi.integration.shell` runs the commands through the shell's dummy
+  backend.
+
 ## v0.1.3 (2026-10-07)
 
 No change to the library or to the on-flash format.

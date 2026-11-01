@@ -24,6 +24,7 @@
 /* Zephyr headers: */
 #include <zephyr/kernel.h>
 #include <zephyr/storage/flash_map.h>
+#include <zephyr/sys/slist.h>
 #include <zephyr/toolchain.h>
 
 /* PSA headers: */
@@ -268,6 +269,11 @@ struct ubi_device {
 
 	/** Room for volume table records. */
 	struct ubi_scratch *scratch;
+
+#if defined(CONFIG_UBI_SHELL)
+	/** Place in the list of attached devices the shell walks. */
+	sys_snode_t shell_node;
+#endif
 };
 
 /* Module interface function declarations ---------------------------------- */
