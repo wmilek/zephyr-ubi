@@ -43,6 +43,11 @@ if(CONFIG_FLASH_SIMULATOR)
   )
 endif()
 
+# The diagnostic shell, through the dummy backend.
+if(CONFIG_UBI_SHELL)
+  target_sources(app PRIVATE src/test_shell.c)
+endif()
+
 # The on-flash layout and key derivation, for tests that forge blocks.
 target_include_directories(app PRIVATE
   ${ZEPHYR_UBI_MODULE_DIR}/library

@@ -63,6 +63,18 @@ tests:
       - ubi
     extra_configs:
       - CONFIG_UBI_ERASE_INVALIDATES_HEADERS=n
+  ubi.integration.shell:
+    platform_allow:
+      - native_sim
+    tags:
+      - ubi
+    extra_configs:
+      - CONFIG_SHELL=y
+      - CONFIG_SHELL_BACKEND_SERIAL=n
+      - CONFIG_SHELL_BACKEND_DUMMY=y
+      - CONFIG_SHELL_BACKEND_DUMMY_BUF_SIZE=16384
+      - CONFIG_SHELL_LOG_BACKEND=n
+      - CONFIG_UBI_SHELL=y
   # The ends of two ranges.
   ubi.integration.eager_state_check:
     platform_allow:

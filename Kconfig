@@ -97,6 +97,17 @@ config UBI_SELF_CHECKS
           Takes a bitmap of one bit per block from the heap at attach. Meant
           for tests and bring-up.
 
+config UBI_SHELL
+        bool "Diagnostic shell commands"
+        depends on SHELL
+        help
+          Adds a "ubi" shell command that lists the attached devices and,
+          for each, shows the device information, the volumes, which
+          physical block backs every logical one, and the state and erase
+          count of every physical block. Read-only: it writes nothing to
+          the flash and changes no state. Devices are named by the number
+          of their partition. Costs one pointer in the handle.
+
 module = UBI
 module-str = ubi
 source "subsys/logging/Kconfig.template.log_config"

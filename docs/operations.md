@@ -90,6 +90,51 @@ material, so new keying material means a new device:
 
 The erase counts are authenticated with the old key, so they are lost with it.
 
+## Diagnostic shell
+
+With `CONFIG_SHELL` and `CONFIG_UBI_SHELL`, a `ubi` shell command shows what
+an attached device holds: which physical block backs each logical block, and
+how worn every block is. It only reads: nothing goes to the flash and no
+state changes. Every attached device is listed automatically, by its
+partition number, or by its label with `CONFIG_FLASH_MAP_LABELS`.
+
+| command | shows |
+|---|---|
+| `ubi list` | the attached devices: partition, label, block count and size, volumes, state |
+| `ubi info <dev>` | geometry, block counts, erase count range and mean, rollback counters, where the volume table copies are, read-only and trust state |
+| `ubi volumes <dev>` | every volume: identifier, name, LEBs, LEBs mapped |
+| `ubi map <dev> [volume]` | the PEB behind each mapped LEB of one volume, by identifier or name, or of all, with each PEB's erase count and state |
+| `ubi pebs <dev> [first [count]]` | each PEB's state, erase count, protection left and owner: `vol:LEB`, or `vt:copy` for the volume table |
+| `ubi ec <dev> [first [count]]` | the erase count range, then the count of each PEB, eight to a line |
+
+```
+uart:~$ ubi map 5
+volume table (internal): 2 LEBs, 2 mapped
+     LEB    PEB         EC  state
+       0      2          2  mapped
+       1      0          2  mapped
+volume 0 "logs": 4 LEBs, 2 mapped
+     LEB    PEB         EC  state
+       1      1          2  mapped
+       3      3          2  mapped
+uart:~$ ubi ec 5 0 10
+3 healthy PEBs: min 2, max 2, spread 0; levelling threshold 256; ~ marks a count estimated at attach
+     0:          2          2          2         ~1         ~1         ~1         ~1         ~1
+     8:         ~1         ~1
+```
+
+A count marked `~` belongs to a block with no usable erase counter header,
+such as one never formatted: attach gave it the mean of the others. Old
+copies waiting for reclaim show no owner, since only the mappings in force
+are kept in RAM.
+
+A command locks the device only while it copies a few rows, never while it
+prints, so a slow console does not hold up the application; a long listing
+is consistent row by row, not as a whole. It waits up to 5 s for an
+operation in progress and then gives up with "the device is busy". A device
+cannot detach while a command looks at it: `ubi_device_deinit()` waits for
+the command to finish.
+
 ## Resources
 
 Sizes from the nRF5340 build (Cortex-M33, `-Os`, logging off, mbedTLS),
@@ -106,6 +151,7 @@ timings on the nRF5340 DK:
 | erase | 87 ms for a 4 KiB block and 1.2 s for a 64 KiB one on the same part |
 
 `CONFIG_UBI_SELF_CHECKS` adds one bit per erase block of heap.
+`CONFIG_UBI_SHELL` adds a pointer to the handle.
 
 ## Limits
 
